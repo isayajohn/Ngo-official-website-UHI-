@@ -20,6 +20,8 @@
 @case('menu') <path d="M4 6h16M4 12h16M4 18h16"/> @break
 @case('close') <path d="m6 6 12 12M6 18 18 6"/> @break
 @case('globe') <circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4" ry="10"/><path d="M2 12h20"/> @break
+@case('eye') <path d="M2.2 12s3.6-7 9.8-7 9.8 7 9.8 7-3.6 7-9.8 7-9.8-7-9.8-7Z"/><circle cx="12" cy="12" r="3"/> @break
+@case('target') <circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/> @break
 @case('mail') <rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/> @break
 @case('phone') <path d="M6 3h3l2 5-2.5 1.8a14 14 0 0 0 5.7 5.7L16 13l5 2v3c0 1.1-.9 2-2 2C10.7 20 4 13.3 4 5a2 2 0 0 1 2-2Z"/> @break
 @case('message-circle') <path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.5 8.5 0 0 1-3.7-.9L4 20l1.5-3.7A7.5 7.5 0 1 1 20 11.5Z"/> @break
