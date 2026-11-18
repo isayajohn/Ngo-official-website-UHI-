@@ -60,7 +60,7 @@ class Settings extends BaseSettings
                 TextInput::make('organization_name')->required()->maxLength(255), TextInput::make('abbreviation')->required()->maxLength(20),
                 Textarea::make('tagline')->required()->maxLength(500),
                 CmsFields::image('logo')->label('Organization logo'), TextInput::make('logo_alt')->label('Logo alternative text')->maxLength(255)->helperText('Used by screen readers and when the logo cannot load.'),
-                CmsFields::image('favicon')->label('Browser favicon'), TextInput::make('favicon_alt')->label('Favicon description')->maxLength(255)->helperText('A short description for the browser icon asset.'),
+                CmsFields::favicon()->label('Browser favicon (.ico)'), TextInput::make('favicon_alt')->label('Favicon description')->maxLength(255)->helperText('A short description for the browser icon asset.'),
                 Textarea::make('vision')->required()->maxLength(2000), Textarea::make('mission')->required()->maxLength(4000), Textarea::make('goal')->required()->maxLength(4000),
             ]),
             Section::make('Header navigation')->description('Edit the public navigation menu and dropdown links. Items with child links open as dropdowns.')->schema([

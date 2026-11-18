@@ -8,17 +8,17 @@ $isActiveMenuUrl = static function (?string $url): bool {
 };
 @endphp
 <div class="site-contact-bar text-white">
-<div class="wrap flex min-h-10 flex-wrap items-center justify-between gap-x-6 gap-y-1 py-2 text-[11px] font-medium sm:text-xs">
-<div class="flex flex-wrap items-center gap-x-5 gap-y-1">
-@if($site->get('email'))<a class="inline-flex items-center gap-2 hover:text-white/75" href="mailto:{{ $site->get('email') }}"><x-ughi-icon name="mail" class="h-3.5 w-3.5"/>{{ $site->get('email') }}</a>@endif
-@if($site->get('phone'))<a class="inline-flex items-center gap-2 hover:text-white/75" href="tel:{{ $site->get('phone') }}"><x-ughi-icon name="phone" class="h-3.5 w-3.5"/>{{ $site->get('phone') }}</a>@endif
+<div class="site-utility-inner wrap flex min-h-11 flex-wrap items-center justify-between gap-x-8 gap-y-2 py-2 text-[11px] font-medium sm:text-xs">
+<div class="site-contacts flex flex-wrap items-center gap-x-6 gap-y-1.5">
+@if($site->get('email'))<a class="inline-flex items-center gap-2 whitespace-nowrap hover:text-white/75" href="mailto:{{ $site->get('email') }}"><x-ughi-icon name="mail" class="h-3.5 w-3.5 shrink-0"/>{{ $site->get('email') }}</a>@endif
+@if($site->get('phone'))<a class="inline-flex items-center gap-2 whitespace-nowrap hover:text-white/75" href="tel:{{ $site->get('phone') }}"><x-ughi-icon name="phone" class="h-3.5 w-3.5 shrink-0"/>{{ $site->get('phone') }}</a>@endif
 @unless($site->get('email') || $site->get('phone'))<a class="hover:text-white/75" href="/contact">Contact UGHI</a>@endunless
 </div>
-<div class="flex items-center gap-3"><span class="hidden sm:inline">{{ $site->get('tagline') }}</span>@foreach(['facebook', 'x', 'instagram', 'linkedin', 'youtube'] as $network)@if($site->get($network))<a href="{{ $site->get($network) }}" aria-label="{{ ucfirst($network) }}" rel="noopener noreferrer" class="flex h-7 w-7 items-center justify-center rounded-full border border-white/35 text-[10px] font-bold hover:bg-white/15">{{ $network === 'facebook' ? 'f' : ($network === 'instagram' ? '◎' : ($network === 'linkedin' ? 'in' : ($network === 'youtube' ? '▶' : '𝕏'))) }}</a>@endif @endforeach</div>
+<div class="site-utility-meta flex items-center gap-3 sm:gap-4"><span class="hidden sm:inline">{{ $site->get('tagline') }}</span><div class="flex items-center gap-2">@foreach(['facebook', 'x', 'instagram', 'linkedin', 'youtube'] as $network)@if($site->get($network))<a href="{{ $site->get($network) }}" aria-label="{{ ucfirst($network) }}" rel="noopener noreferrer" class="flex h-7 w-7 items-center justify-center rounded-full border border-white/35 text-[10px] font-bold transition-colors hover:bg-white/15">{{ $network === 'facebook' ? 'f' : ($network === 'instagram' ? '◎' : ($network === 'linkedin' ? 'in' : ($network === 'youtube' ? '▶' : '𝕏'))) }}</a>@endif @endforeach</div></div>
 </div>
 </div>
 <header x-data="{ mobile: false }" @keydown.escape.window="if (mobile) { mobile = false; $refs.mobileToggle.focus() }" class="site-header sticky top-0 z-50 border-b border-line bg-white/95 shadow-[0_5px_20px_rgb(6_71_127_/_8%)] backdrop-blur">
-<div class="wrap flex h-[76px] items-center justify-between gap-5 lg:max-w-[1200px]">
+<div class="site-header-inner wrap flex h-[76px] items-center justify-between gap-5 lg:max-w-[1200px]">
 <x-logo />
 <nav aria-label="Main navigation" class="site-main-nav hidden items-center gap-1 xl:flex">
 @foreach($menuItems as $index => $item)
