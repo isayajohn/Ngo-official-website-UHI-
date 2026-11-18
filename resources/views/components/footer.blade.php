@@ -26,7 +26,7 @@
     </div>
 </div>
 <div class="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-white/15 pt-6 text-xs text-white/60">
-    <p>© {{ now()->year }} {{ $site->get('organization_name') }}. All rights reserved.</p>
+    <div class="flex flex-wrap items-center gap-x-5 gap-y-2"><p>© {{ now()->year }} {{ $site->get('organization_name') }}. All rights reserved.</p><p>Designed and developed by <a class="font-medium text-white/75 underline decoration-white/30 underline-offset-2 hover:text-white" href="https://afrigotech.com" target="_blank" rel="noopener noreferrer">Afrigotech T Limited</a></p></div>
     <div class="flex flex-wrap gap-x-5 gap-y-2">@foreach($site->get('footer_legal_links', []) as $link)@if(filled($link['label'] ?? null) && filled($link['url'] ?? null))<a class="hover:text-white" href="{{ $link['url'] }}" @if(str_starts_with($link['url'], 'http')) rel="noopener noreferrer" @endif>{{ $link['label'] }}</a>@endif @endforeach</div>
 </div>
 </div>
