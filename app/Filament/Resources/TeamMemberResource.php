@@ -21,6 +21,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
@@ -56,6 +57,8 @@ class TeamMemberResource extends Resource
                 Toggle::make('show_on_website')->default(true), Toggle::make('active')->default(true),
                 Toggle::make('is_leader')->label('Show in Leadership')->live()->helperText('Use this for board, executive and other public leadership profiles.'),
                 TextInput::make('leadership_role')->label('Leadership role')->maxLength(160)->visible(fn (Get $get): bool => (bool) $get('is_leader'))->dehydrated(),
+                Select::make('leadership_group')->label('Public team section')->options(['board' => 'Board Members', 'senior_management' => 'Senior Management Team', 'other' => 'Other Leadership'])->default('other')->required(fn (Get $get): bool => (bool) $get('is_leader'))->visible(fn (Get $get): bool => (bool) $get('is_leader'))->live()->afterStateUpdated(fn (Set $set) => $set('leadership_parent_id', null)),
+                Select::make('leadership_parent_id')->label('Reports to (for hierarchy view)')->options(fn (Get $get, ?TeamMember $record): array => TeamMember::query()->where('is_leader', true)->where('active', true)->where('show_on_website', true)->when($get('leadership_group'), fn ($query, $group) => $query->where('leadership_group', $group))->when($record?->exists, fn ($query) => $query->whereKeyNot($record->getKey()))->orderBy('display_order')->orderBy('name')->pluck('name', 'id')->all())->searchable()->preload()->nullable()->placeholder('Top of this section')->helperText('Leave blank for the top of the hierarchy. Select a person to place this profile below them.')->visible(fn (Get $get): bool => (bool) $get('is_leader')),
             ])->columns(2)->columnSpanFull(),
         ]);
     }
@@ -68,11 +71,12 @@ class TeamMemberResource extends Resource
             TextColumn::make('department.name')->sortable()->searchable()->placeholder('Unassigned'),
             TextColumn::make('position.title')->label('Position')->placeholder('Unassigned'),
             TextColumn::make('leadership_role')->label('Leadership role')->badge()->placeholder('Staff member'),
+            TextColumn::make('leadership_group')->label('Public section')->badge()->formatStateUsing(fn (?string $state) => ['board' => 'Board', 'senior_management' => 'Senior Management', 'other' => 'Other Leadership'][$state] ?? $state)->placeholder('—'),
             TextColumn::make('employment_type')->badge()->placeholder('—'),
             TextColumn::make('active')->label('Status')->badge()->formatStateUsing(fn (bool $state) => $state ? 'Active' : 'Inactive')->color(fn (bool $state) => $state ? 'success' : 'gray'),
             IconColumn::make('is_leader')->boolean()->label('Leadership profile'),
             IconColumn::make('show_on_website')->boolean()->label('Website'),
-        ])->defaultSort('display_order')->filters([SelectFilter::make('department_id')->relationship('department', 'name'), TernaryFilter::make('is_leader')->label('Leadership'), TernaryFilter::make('active'), TernaryFilter::make('show_on_website')->label('Website visible'), TrashedFilter::make()])
+        ])->defaultSort('display_order')->filters([SelectFilter::make('department_id')->relationship('department', 'name'), SelectFilter::make('leadership_group')->label('Public team section')->options(['board' => 'Board Members', 'senior_management' => 'Senior Management Team', 'other' => 'Other Leadership']), TernaryFilter::make('is_leader')->label('Leadership'), TernaryFilter::make('active'), TernaryFilter::make('show_on_website')->label('Website visible'), TrashedFilter::make()])
             ->extraAttributes(['class' => 'ughi-people-table'])
             ->recordActions([ActionGroup::make([
                 ViewAction::make(), EditAction::make(),

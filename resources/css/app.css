@@ -48,6 +48,26 @@
     .footer-heading { @apply mb-5 font-heading text-lg font-bold text-white; }
     .footer-heading::after { display: block; width: 1.5rem; height: 2px; margin-top: .8rem; background: var(--color-accent); content: ''; }
     .footer-social { @apply flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 text-sm font-bold text-white hover:bg-primary; }
+    .team-profile-card { transition: transform 180ms ease, box-shadow 180ms ease; }
+    .team-profile-card:hover { transform: translateY(-3px); box-shadow: 0 18px 38px rgb(6 71 127 / 12%); }
+    .leadership-tree { @apply flex w-full flex-col items-center gap-10; }
+    .leadership-node { @apply flex w-full flex-col items-center; }
+    .leadership-hierarchy-card { @apply relative z-10 flex w-60 flex-col items-center rounded-2xl border border-line border-t-[3px] border-t-accent bg-white px-5 py-5 text-center shadow-soft; }
+    .leadership-hierarchy-photo { @apply h-24 w-24 rounded-full bg-white object-cover object-top; }
+    .leadership-photo-placeholder { @apply flex items-center justify-center bg-primary/5 text-primary; }
+    .leadership-children { position: relative; display: grid; width: 100%; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: 2rem 1rem; margin-top: 2.5rem; padding-top: 2rem; }
+    .leadership-children::before { position: absolute; top: -2.5rem; left: 50%; height: 2.5rem; border-left: 1px solid #9ac0e8; content: ''; }
+    .leadership-children::after { position: absolute; top: 0; right: 8%; left: 8%; border-top: 1px solid #9ac0e8; content: ''; }
+    .leadership-children > .leadership-node::before { position: absolute; top: 0; height: 2rem; border-left: 1px solid #9ac0e8; content: ''; }
+    .history-timeline-vertical { position: relative; display: grid; max-width: 54rem; gap: 2rem; margin-inline: auto; padding-left: 2rem; }
+    .history-timeline-vertical::before { position: absolute; top: .5rem; bottom: .5rem; left: .45rem; border-left: 2px solid #b8d3ef; content: ''; }
+    .history-milestone { position: relative; display: grid; gap: .75rem; }
+    .history-milestone::before { position: absolute; top: .45rem; left: -2rem; width: 1rem; height: 1rem; border: 3px solid white; border-radius: 50%; background: var(--color-primary); box-shadow: 0 0 0 2px #b8d3ef; content: ''; }
+    .history-milestone-year { @apply text-sm font-extrabold tracking-wide text-primary; }
+    .history-timeline-horizontal { position: relative; display: flex; gap: 1.25rem; overflow-x: auto; padding: 2rem .5rem 1rem; scroll-snap-type: x mandatory; }
+    .history-timeline-horizontal::before { position: absolute; top: 2.5rem; right: 0; left: 0; border-top: 2px solid #b8d3ef; content: ''; }
+    .history-milestone-horizontal { position: relative; z-index: 1; width: min(82vw, 19rem); flex: 0 0 min(82vw, 19rem); scroll-snap-align: start; }
+    .history-horizontal-dot { display: block; width: 1rem; height: 1rem; border: 3px solid white; border-radius: 50%; background: var(--color-primary); box-shadow: 0 0 0 2px #b8d3ef; }
     .demo-preview-notice { @apply flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 border-b border-accent/20 bg-accent/10 px-4 py-2 text-center text-[11px] font-medium text-primary-dark; }
     .demo-preview-notice strong { @apply font-extrabold tracking-[0.12em] text-accent; }
     .impact-band { background: linear-gradient(105deg, #0870bd 0%, #06477f 100%); }

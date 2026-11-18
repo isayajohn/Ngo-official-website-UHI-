@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\Project;
 use App\Support\CmsFields;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -19,7 +20,9 @@ class Homepage extends BaseSettings
     {
         return [
             'Hero' => ['hero_eyebrow', 'hero_title', 'hero_description', 'hero_primary_label', 'hero_primary_url', 'hero_secondary_label', 'hero_secondary_url', 'hero_image', 'hero_image_alt', 'hero_image_caption', 'hero_image_2', 'hero_image_2_alt', 'hero_image_2_caption', 'hero_image_3', 'hero_image_3_alt', 'hero_image_3_caption'],
-            'About UGHI' => ['about_eyebrow', 'about_title', 'about_description', 'about_image', 'about_image_alt'],
+            'About UGHI' => ['about_eyebrow', 'about_title', 'about_description', 'about_image', 'about_image_alt', 'about_values'],
+            'Our Team' => ['team_eyebrow', 'team_title', 'team_description'],
+            'Our History' => ['history_eyebrow', 'history_title', 'history_description', 'history_timeline'],
             'Programme introduction' => ['programmes_eyebrow', 'programmes_title', 'programmes_description'],
             'Featured project' => ['featured_project_id'],
             'Where we work' => ['location_title', 'location_description'],
@@ -32,6 +35,8 @@ class Homepage extends BaseSettings
         return [
             'Hero' => 'heroicon-o-sparkles',
             'About UGHI' => 'heroicon-o-information-circle',
+            'Our Team' => 'heroicon-o-user-group',
+            'Our History' => 'heroicon-o-clock',
             'Programme introduction' => 'heroicon-o-heart',
             'Featured project' => 'heroicon-o-star',
             'Where we work' => 'heroicon-o-map',
@@ -46,7 +51,7 @@ class Homepage extends BaseSettings
 
     protected function editableKeys(): array
     {
-        return ['featured_project_id', 'hero_eyebrow', 'hero_title', 'hero_description', 'hero_primary_label', 'hero_primary_url', 'hero_secondary_label', 'hero_secondary_url', 'hero_image', 'hero_image_alt', 'hero_image_caption', 'hero_image_2', 'hero_image_2_alt', 'hero_image_2_caption', 'hero_image_3', 'hero_image_3_alt', 'hero_image_3_caption', 'about_eyebrow', 'about_title', 'about_description', 'about_image', 'about_image_alt', 'programmes_eyebrow', 'programmes_title', 'programmes_description', 'location_title', 'location_description', 'cta_title', 'cta_description'];
+        return ['featured_project_id', 'hero_eyebrow', 'hero_title', 'hero_description', 'hero_primary_label', 'hero_primary_url', 'hero_secondary_label', 'hero_secondary_url', 'hero_image', 'hero_image_alt', 'hero_image_caption', 'hero_image_2', 'hero_image_2_alt', 'hero_image_2_caption', 'hero_image_3', 'hero_image_3_alt', 'hero_image_3_caption', 'about_eyebrow', 'about_title', 'about_description', 'about_image', 'about_image_alt', 'about_values', 'team_eyebrow', 'team_title', 'team_description', 'history_eyebrow', 'history_title', 'history_description', 'history_timeline', 'programmes_eyebrow', 'programmes_title', 'programmes_description', 'location_title', 'location_description', 'cta_title', 'cta_description'];
     }
 
     protected function fields(): array
@@ -63,7 +68,21 @@ class Homepage extends BaseSettings
                 CmsFields::image('hero_image_2')->label('Hero slide 2 image'), $text('hero_image_2_alt')->label('Slide 2 alternative text')->default('Community outreach for healthier futures'), $text('hero_image_2_caption')->label('Slide 2 caption')->default('Community outreach for healthier futures'),
                 CmsFields::image('hero_image_3')->label('Hero slide 3 image'), $text('hero_image_3_alt')->label('Slide 3 alternative text')->default('Health education for lasting change'), $text('hero_image_3_caption')->label('Slide 3 caption')->default('Health education for lasting change'),
             ])->columns(2),
-            Section::make('About UGHI')->schema([$text('about_eyebrow'), $text('about_title'), $body('about_description'), CmsFields::image('about_image'), $text('about_image_alt')]),
+            Section::make('About UGHI')->description('This content also appears on the About UGHI page.')->schema([
+                $text('about_eyebrow'), $text('about_title'), $body('about_description'), CmsFields::image('about_image'), $text('about_image_alt'),
+                Repeater::make('about_values')->label('Core values')->schema([TextInput::make('label')->required()->maxLength(80)])->defaultItems(0)->maxItems(12)->reorderable()->collapsible()->columnSpanFull(),
+            ]),
+            Section::make('Our Team')->description('Manage the introduction above the public Board and Senior Management profiles. Manage the people and reporting hierarchy under Organization → Staff & Leadership.')->schema([
+                $text('team_eyebrow'), $text('team_title'), $body('team_description'),
+            ]),
+            Section::make('Our History')->description('Manage the public history introduction and timeline. Use verified milestones only.')->schema([
+                $text('history_eyebrow'), $text('history_title'), $body('history_description'),
+                Repeater::make('history_timeline')->label('Timeline milestones')->schema([
+                    TextInput::make('year')->required()->maxLength(40)->helperText('A year or period, for example 2018–2020.'),
+                    TextInput::make('title')->required()->maxLength(160),
+                    Textarea::make('description')->required()->rows(3)->maxLength(1200)->columnSpanFull(),
+                ])->columns(2)->defaultItems(0)->maxItems(40)->reorderable()->collapsible()->columnSpanFull(),
+            ]),
             Section::make('Programme introduction')->schema([$text('programmes_eyebrow'), $text('programmes_title'), $body('programmes_description')]),
             Section::make('Featured project')->description('Select a published project, or leave blank to use the latest project marked featured.')->schema([
                 Select::make('featured_project_id')->label('Homepage featured project')->searchable()

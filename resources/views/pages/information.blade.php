@@ -39,17 +39,51 @@
     @if($operatingCountries->isNotEmpty())<div class="mt-20 grid gap-10 border-t border-line pt-12 lg:grid-cols-[.8fr_1.2fr]"><div><p class="eyebrow">WHERE WE WORK</p><h2 class="text-3xl font-bold tracking-[-.03em]">Find us in our operating areas.</h2><p class="mt-4 leading-7 text-muted">Our published country, region and district information is managed by the UGHI team.</p><a href="/where-we-work" class="text-link mt-6">Explore locations<x-ughi-icon class="h-4 w-4"/></a></div><div class="card p-6"><x-location-summary :countries="$operatingCountries"/></div></div>@endif
 @elseif($kind === 'leadership')
     @if(filled($body))<article class="prose prose-lg mb-12 max-w-3xl text-muted"><p class="whitespace-pre-line leading-8">{{ $body }}</p></article>@endif
-    @if($leaders->isNotEmpty())
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            @foreach($leaders as $leader)
-                <article class="card overflow-hidden">
-                    @if($leader->photo)<img src="{{ Storage::disk('public')->url($leader->photo) }}" alt="{{ $leader->photo_alt ?: $leader->name }}" class="aspect-[4/3] w-full object-cover">@else<div class="flex aspect-[4/3] items-center justify-center bg-primary/8 text-primary"><x-ughi-icon name="users" class="h-14 w-14"/></div>@endif
-                    <div class="p-6"><p class="eyebrow">{{ $leader->leadership_role ?: ($leader->position?->title ?: 'UGHI leadership') }}</p><h2 class="mt-2 text-xl font-bold">{{ $leader->name }}</h2>@if($leader->department)<p class="mt-1 text-sm font-medium text-primary">{{ $leader->department->name }}</p>@endif @if($leader->short_bio)<p class="mt-4 text-sm leading-7 text-muted">{{ $leader->short_bio }}</p>@endif @if($leader->email)<a href="mailto:{{ $leader->email }}" class="text-link mt-5">Contact {{ $leader->name }}<x-ughi-icon name="arrow-up-right" class="h-4 w-4"/></a>@endif</div>
-                </article>
-            @endforeach
+    @if($leadershipGroups->isNotEmpty())
+        <div x-data="{ layout: 'hierarchy' }">
+            <div class="mb-12 flex justify-center gap-2" role="group" aria-label="Choose team layout">
+                <button type="button" @click="layout = 'hierarchy'" :aria-pressed="layout === 'hierarchy'" class="btn min-h-10 px-5 py-2 text-sm" :class="layout === 'hierarchy' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'border border-line bg-white text-muted hover:border-primary hover:text-primary'"><x-ughi-icon name="branch" class="h-4 w-4"/>Hierarchy</button>
+                <button type="button" @click="layout = 'grid'" :aria-pressed="layout === 'grid'" class="btn min-h-10 px-5 py-2 text-sm" :class="layout === 'grid' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'border border-line bg-white text-muted hover:border-primary hover:text-primary'"><x-ughi-icon name="grid" class="h-4 w-4"/>Grid</button>
+            </div>
+            <div class="space-y-16">
+                @foreach($leadershipGroups as $group)
+                    @php
+                        $memberIds = $group['members']->pluck('id');
+                        $roots = $group['members']->filter(fn ($member) => !$member->leadership_parent_id || !$memberIds->contains($member->leadership_parent_id))->values();
+                        if ($roots->isEmpty()) $roots = $group['members'];
+                    @endphp
+                    <section aria-labelledby="team-group-{{ $group['key'] }}">
+                        <div class="mb-8 text-center"><p class="eyebrow justify-center">MEET THE PEOPLE BEHIND UGHI</p><h2 id="team-group-{{ $group['key'] }}" class="text-3xl font-bold tracking-[-.035em]">{{ $group['label'] }}</h2></div>
+                        <div x-show="layout === 'hierarchy'" x-cloak class="leadership-tree">
+                            @foreach($roots as $root)@include('components.leadership-node', ['member' => $root, 'trail' => []])@endforeach
+                        </div>
+                        <div x-show="layout === 'grid'" x-cloak class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            @foreach($group['members'] as $leader)<x-team-profile-card :member="$leader"/>@endforeach
+                        </div>
+                    </section>
+                @endforeach
+            </div>
         </div>
     @else
         <x-empty-state :title="$emptyTitle" :description="$emptyDescription"/>
+    @endif
+@elseif($kind === 'history')
+    @if(filled($body))<article class="prose prose-lg mb-12 max-w-3xl text-muted"><p class="whitespace-pre-line leading-8">{{ $body }}</p></article>@endif
+    @if(count($history))
+        <section x-data="{ layout: 'vertical' }" aria-label="UGHI history timeline">
+            <div class="mb-10 flex justify-center gap-2" role="group" aria-label="Choose timeline layout">
+                <button type="button" @click="layout = 'vertical'" :aria-pressed="layout === 'vertical'" class="btn min-h-10 px-5 py-2 text-sm" :class="layout === 'vertical' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'border border-line bg-white text-muted hover:border-primary hover:text-primary'"><x-ughi-icon name="branch" class="h-4 w-4"/>Vertical</button>
+                <button type="button" @click="layout = 'horizontal'" :aria-pressed="layout === 'horizontal'" class="btn min-h-10 px-5 py-2 text-sm" :class="layout === 'horizontal' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'border border-line bg-white text-muted hover:border-primary hover:text-primary'"><x-ughi-icon name="grid" class="h-4 w-4"/>Horizontal</button>
+            </div>
+            <div x-show="layout === 'vertical'" x-cloak class="history-timeline-vertical">
+                @foreach($history as $milestone)<article class="history-milestone"><div class="history-milestone-year">{{ $milestone['year'] ?? '' }}</div><div class="card p-6 md:p-8"><h2 class="text-xl font-bold">{{ $milestone['title'] ?? '' }}</h2><p class="mt-3 whitespace-pre-line text-sm leading-7 text-muted">{{ $milestone['description'] ?? '' }}</p></div></article>@endforeach
+            </div>
+            <div x-show="layout === 'horizontal'" x-cloak class="history-timeline-horizontal">
+                @foreach($history as $milestone)<article class="history-milestone-horizontal"><span class="history-horizontal-dot"></span><p class="text-sm font-bold tracking-wide text-primary">{{ $milestone['year'] ?? '' }}</p><div class="card mt-4 h-full p-6"><h2 class="text-lg font-bold">{{ $milestone['title'] ?? '' }}</h2><p class="mt-3 whitespace-pre-line text-sm leading-7 text-muted">{{ $milestone['description'] ?? '' }}</p></div></article>@endforeach
+            </div>
+        </section>
+    @else
+        <x-empty-state title="Our journey is being documented" description="Our history and milestones will be published here once they have been confirmed by the organization."/>
     @endif
 @elseif(in_array($kind, ['volunteer', 'membership', 'partnership'], true))
     @if(filled($body))<p class="mb-8 max-w-3xl whitespace-pre-line text-lg leading-8 text-muted">{{ $body }}</p>@endif

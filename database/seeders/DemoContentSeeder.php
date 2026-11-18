@@ -12,6 +12,7 @@ use App\Models\Partner;
 use App\Models\Programme;
 use App\Models\Project;
 use App\Models\Region;
+use App\Models\SiteSetting;
 use App\Models\TeamMember;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -35,6 +36,7 @@ class DemoContentSeeder extends Seeder
         $this->createDemoPartners();
         $this->createDemoStories();
         $this->createDemoLeaders();
+        $this->createDemoHistory();
         $this->publishDemoStatistics();
         $this->registerDemoMedia();
     }
@@ -234,18 +236,22 @@ class DemoContentSeeder extends Seeder
     {
         $department = \App\Models\Department::query()->where('code', 'SEC')->first();
         $leaders = [
-            ['demo-executive-director', 'Sample Executive Director (Demo)', 'EXECUTIVE DIRECTOR', 'Illustrative leadership profile for local preview only. Replace with an approved biography before launch.', 'demo-content/community-care.jpg'],
-            ['demo-programme-lead', 'Sample Programme Lead (Demo)', 'PROGRAMME LEAD', 'Illustrative leadership profile for local preview only. Replace with an approved biography before launch.', 'demo-content/listening-care.jpg'],
-            ['demo-community-representative', 'Sample Community Representative (Demo)', 'COMMUNITY REPRESENTATIVE', 'Illustrative leadership profile for local preview only. Replace with an approved biography before launch.', 'demo-content/community-care.jpg'],
+            ['demo-executive-director', 'Sample Chief Executive Officer (Demo)', 'Chief Executive Officer', 'senior_management', null, 'demo-content/community-care.jpg'],
+            ['demo-programme-lead', 'Sample Director of Programmes (Demo)', 'Director of Programmes', 'senior_management', 'demo-executive-director', 'demo-content/listening-care.jpg'],
+            ['demo-community-representative', 'Sample Board Chairperson (Demo)', 'Board Chairperson', 'board', null, 'demo-content/community-care.jpg'],
+            ['demo-board-member-one', 'Sample Board Member One (Demo)', 'Board Member', 'board', 'demo-community-representative', 'demo-content/listening-care.jpg'],
+            ['demo-board-member-two', 'Sample Board Member Two (Demo)', 'Board Member', 'board', 'demo-community-representative', 'demo-content/community-care.jpg'],
         ];
 
-        foreach ($leaders as $order => [$slug, $name, $role, $bio, $photo]) {
-            $leader = TeamMember::withTrashed()->firstOrCreate(['slug' => $slug], [
+        foreach ($leaders as $order => [$slug, $name, $role, $group, $parentSlug, $photo]) {
+            $leader = TeamMember::withTrashed()->updateOrCreate(['slug' => $slug], [
                 'department_id' => $department?->id,
                 'name' => $name,
                 'leadership_role' => $role,
-                'short_bio' => $bio,
-                'bio' => $bio,
+                'leadership_group' => $group,
+                'leadership_parent_id' => null,
+                'short_bio' => 'Illustrative demo profile for local preview only. Replace this with an approved biography before launch.',
+                'bio' => 'This is sample content for previewing the public team page. It is not an official UGHI profile.',
                 'photo' => Storage::disk('public')->exists($photo) ? $photo : null,
                 'photo_alt' => 'Illustrative demo profile image',
                 'display_order' => $order + 1,
@@ -257,6 +263,28 @@ class DemoContentSeeder extends Seeder
                 $leader->restore();
             }
         }
+
+        foreach ($leaders as [$slug, , , , $parentSlug]) {
+            if ($parentSlug) {
+                TeamMember::where('slug', $slug)->update(['leadership_parent_id' => TeamMember::where('slug', $parentSlug)->value('id')]);
+            }
+        }
+    }
+
+    private function createDemoHistory(): void
+    {
+        $setting = SiteSetting::query()->where('key', 'global')->first();
+        if (! $setting) return;
+
+        $data = $setting->data ?? [];
+        if (! empty($data['history_timeline'])) return;
+
+        $data['history_timeline'] = [
+            ['year' => 'Demo year 1', 'title' => 'Demo milestone: a community initiative begins', 'description' => 'Illustrative placeholder for the organization’s founding story. Replace with a verified milestone before launch.'],
+            ['year' => 'Demo year 2', 'title' => 'Demo milestone: local partnerships grow', 'description' => 'Illustrative placeholder showing how timeline entries appear. Replace with an approved account of UGHI’s work.'],
+            ['year' => 'Present · Demo', 'title' => 'Demo milestone: learning continues', 'description' => 'Sample timeline content for local preview only. Add verified dates and details in the page management controls.'],
+        ];
+        $setting->update(['data' => $data]);
     }
 
     private function publishDemoStatistics(): void

@@ -15,6 +15,7 @@
 @case('pin') <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/> @break
 @case('hospital') <path d="M3 21h18M5 21V5h14v16M9 5V3h6v2M9 10h2m2 0h2m-6 4h2m2 0h2m-6 7v-4h4v4"/><path d="M11 6v4m-2-2h4"/> @break
 @case('branch') <rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="9" y="15" width="6" height="6" rx="1"/><path d="M6 9v2a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4V9"/> @break
+@case('grid') <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/> @break
 @case('check') <path d="m5 12 4 4L19 6"/> @break
 @case('menu') <path d="M4 6h16M4 12h16M4 18h16"/> @break
 @case('close') <path d="m6 6 12 12M6 18 18 6"/> @break

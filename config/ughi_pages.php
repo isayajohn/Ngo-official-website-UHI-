@@ -2,7 +2,9 @@
 
 return [
     'news' => ['News', 'Updates from UGHI and our communities.', 'News and updates', 'News from UGHI will appear here as it is published.', 'empty'],
-    'about/leadership' => ['Leadership', 'Accountable leadership. A shared commitment.', 'Meet our people', 'Approved board, leadership and secretariat profiles will be published here.', 'leadership'],
+    'our-team' => ['Our Team', 'Meet the people behind Ustawi Global Health Initiative.', 'Meet our people', 'Our board, senior management and wider leadership team will be shown here when published.', 'leadership'],
+    'about/leadership' => ['Our Team', 'Meet the people behind Ustawi Global Health Initiative.', 'Meet our people', 'Our board, senior management and wider leadership team will be shown here when published.', 'leadership'],
+    'our-history' => ['Our History', 'The milestones that have shaped our journey.', '', '', 'history'],
     'about/governance' => ['Governance', 'Integrity, oversight and accountability.', '', '', 'governance'],
     'get-involved' => ['Get Involved', 'A healthier future starts with all of us.', '', '', 'involved'],
     'get-involved/volunteer' => ['Volunteer with UGHI', 'Share your time and skills for community health.', 'Volunteer opportunities', 'Share your interests and availability with our team.', 'volunteer'],
