@@ -1,0 +1,2 @@
+@props(['eyebrow' => 'USTAWI GLOBAL HEALTH INITIATIVE', 'title', 'description' => null])
+<section class="bg-canvas py-14 md:py-20"><div class="wrap"><x-breadcrumb :title="$title" /><p class="eyebrow mt-10">{{ $eyebrow }}</p><h1 class="max-w-4xl text-4xl leading-tight font-bold tracking-[-0.04em] md:text-5xl">{{ $title }}</h1>@if($description)<p class="mt-6 max-w-2xl text-lg leading-8 text-muted">{{ $description }}</p>@endif</div></section>

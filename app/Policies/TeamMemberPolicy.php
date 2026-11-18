@@ -1,0 +1,16 @@
+<?php
+
+namespace App\Policies;
+
+use App\Models\TeamMember;
+use App\Models\User;
+
+class TeamMemberPolicy
+{
+    public function viewAny(User $user): bool { return $user->can('team.view'); }
+    public function view(User $user, TeamMember $member): bool { return $user->can('team.view'); }
+    public function create(User $user): bool { return $user->can('team.create'); }
+    public function update(User $user, TeamMember $member): bool { return $user->can('team.update'); }
+    public function delete(User $user, TeamMember $member): bool { return $user->can('team.delete'); }
+    public function restore(User $user, TeamMember $member): bool { return $user->can('team.restore'); }
+}

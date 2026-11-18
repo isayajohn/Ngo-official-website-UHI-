@@ -1,0 +1,16 @@
+<?php
+
+namespace App\Notifications;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
+
+class DepartmentWorkflowNotification extends Notification
+{
+    use Queueable;
+
+    public function __construct(public string $event, public string $message, public ?string $url = null) {}
+    public function via(object $notifiable): array { return ['database']; }
+    public function toArray(object $notifiable): array { return ['event' => $this->event, 'message' => $this->message, 'url' => $this->url]; }
+}

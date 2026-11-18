@@ -1,0 +1,101 @@
+@import '@fontsource/inter/latin-400.css';
+@import '@fontsource/inter/latin-500.css';
+@import '@fontsource/inter/latin-600.css';
+@import '@fontsource/inter/latin-700.css';
+@import '@fontsource/manrope/latin-500.css';
+@import '@fontsource/manrope/latin-600.css';
+@import '@fontsource/manrope/latin-700.css';
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *, [data-theme=dark], [data-theme=dark] *));
+@source '../views/**/*.blade.php';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@theme {
+    --font-sans: 'Inter', sans-serif;
+    --font-heading: 'Manrope', sans-serif;
+    --color-primary: #0870BD;
+    --color-primary-dark: #06477F;
+    --color-secondary: #06477F;
+    --color-accent: #596166;
+    --color-canvas: #F6F8FA;
+    --color-ink: #17212B;
+    --color-muted: #596773;
+    --color-line: #E3E8EC;
+    --shadow-soft: 0 5px 24px rgb(6 71 127 / 5%);
+}
+@layer base {
+    html { scroll-behavior: smooth; scroll-padding-top: 7rem; }
+    body { @apply bg-white text-ink antialiased; }
+    h1,h2,h3,h4 { @apply font-heading; overflow-wrap: anywhere; }
+    a,button,input,textarea { -webkit-tap-highlight-color: transparent; }
+    a,button { @apply transition-colors duration-200; }
+    :focus-visible { outline: 3px solid #0870BD; outline-offset: 5px; }
+    button,summary { cursor: pointer; }
+    img { max-width: 100%; }
+    [x-cloak] { display: none !important; }
+}
+@layer components {
+    .wrap { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
+    .section { @apply py-16 md:py-24; }
+    .eyebrow { @apply mb-5 flex items-center gap-2.5 text-xs font-bold tracking-[0.17em] text-primary; }
+    .eyebrow::before { content: ''; @apply h-1.5 w-1.5 rounded-full bg-primary; }
+    .heading { @apply text-[2rem] leading-[1.2] font-bold tracking-[-0.035em] md:text-[2.75rem]; }
+    .btn { @apply inline-flex min-h-12 items-center justify-center gap-3 rounded-xl px-6 py-3.5 text-sm font-semibold; }
+    .btn-primary { @apply bg-primary text-white hover:bg-primary-dark; }
+    .btn-secondary { @apply border border-primary/25 bg-white text-primary-dark hover:bg-primary/5; }
+    .text-link { @apply inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary-dark; }
+    .card { @apply rounded-[20px] border border-line bg-white shadow-soft; }
+    .nav-link { @apply flex items-center gap-1 py-3 text-[13px] font-medium text-ink hover:text-primary; }
+    .dropdown-menu-trigger { @apply inline-flex items-center justify-center gap-2 border border-transparent text-sm font-medium leading-5 focus:outline-none focus:ring-4 focus:ring-primary/20; }
+    .dropdown-menu-trigger--brand { @apply rounded-xl bg-primary px-4 py-2.5 text-white shadow-sm hover:bg-primary-dark; }
+    .dropdown-menu-trigger--nav { @apply rounded-lg px-1 py-3 text-[13px] text-ink hover:text-primary; }
+    .dropdown-menu-trigger--mobile { @apply w-full justify-between border-b border-line px-0 py-3 text-left text-ink hover:text-primary; }
+    .dropdown-menu-panel { @apply absolute top-full z-50 mt-2 rounded-xl border border-line bg-white shadow-lg; }
+    .dropdown-menu-panel--mobile {
+        position: static;
+        width: 100%;
+        margin-top: 0;
+        border: 0;
+        border-bottom: 1px solid var(--color-line);
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+    .dropdown-menu-list { @apply m-0 list-none p-2 text-sm font-medium text-ink; }
+    .dropdown-menu-list a { @apply inline-flex w-full items-center rounded-lg p-2.5 text-ink hover:bg-canvas hover:text-primary; }
+    :where(.dark, [data-theme="dark"]) .dropdown-menu-panel { border-color: #34413e; background: #17211f; }
+    :where(.dark, [data-theme="dark"]) .dropdown-menu-list { color: #e5ecea; }
+    :where(.dark, [data-theme="dark"]) .dropdown-menu-list a { color: #e5ecea; }
+    :where(.dark, [data-theme="dark"]) .dropdown-menu-list a:hover { background: #202c29; color: #80dfc9; }
+    .filter-input { @apply w-full min-w-0 rounded-xl border border-line bg-white px-3 py-3 text-sm text-ink; }
+    .date-picker-component { @apply relative w-full max-w-sm; }
+    .date-picker-component__icon { @apply pointer-events-none absolute inset-y-0 left-0 z-10 flex items-center pl-3 text-muted; }
+    .date-picker-component__input { @apply block w-full rounded-xl border border-line bg-white py-2.5 pr-3 pl-9 text-sm text-ink shadow-sm focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-60; }
+    .date-picker-component__input::-webkit-calendar-picker-indicator { cursor: pointer; opacity: .72; }
+    :where(.dark, [data-theme="dark"]) .date-picker-component__input { border-color: #34413e; background: #17211f; color: #e5ecea; color-scheme: dark; }
+    .footer-link { @apply block py-1.5 text-[13px] text-white/75 hover:text-white; }
+    .hero-carousel-stage { @apply relative mx-auto w-full max-w-[700px] overflow-hidden; height: clamp(500px, 46vw, 620px); }
+    .hero-carousel-card { @apply absolute top-1/2 left-1/2 overflow-hidden rounded-[28px] border-[6px] border-white bg-white shadow-soft; width: clamp(270px, 31vw, 440px); height: clamp(410px, 43vw, 600px); transform-origin: center; transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1), opacity 600ms ease, box-shadow 600ms ease; will-change: transform, opacity; }
+    .hero-carousel-card--active { z-index: 20; opacity: 1; transform: translate(-50%, -50%) scale(1); box-shadow: 0 18px 44px rgb(18 59 45 / 16%); }
+    .hero-carousel-card--previous { z-index: 10; opacity: .82; transform: translate(calc(-50% - 164px), calc(-50% + 24px)) scale(.84) rotate(-4deg); }
+    .hero-carousel-card--next { z-index: 10; opacity: .82; transform: translate(calc(-50% + 164px), calc(-50% + 24px)) scale(.84) rotate(4deg); }
+    .hero-carousel-card__image { @apply h-full w-full object-cover object-[center_35%]; }
+    .hero-carousel-card__overlay { @apply absolute inset-x-0 bottom-0 bg-gradient-to-t from-secondary/95 via-secondary/60 to-transparent px-5 pb-6 pt-24 text-white sm:px-7 sm:pb-8; }
+    .hero-carousel-control { @apply flex h-12 w-12 items-center justify-center rounded-full border border-line bg-white text-primary shadow-soft transition hover:border-primary/30 hover:bg-[#E5F2FB] focus-visible:outline-primary; }
+    .hero-carousel-dot { @apply h-2.5 rounded-full transition-all duration-300; }
+    .hero-carousel-orbit { @apply pointer-events-none absolute rounded-full border border-primary/20; }
+}
+@media (max-width: 1023px) {
+    .hero-carousel-card--previous { transform: translate(calc(-50% - 100px), calc(-50% + 20px)) scale(.78) rotate(-3deg); }
+    .hero-carousel-card--next { transform: translate(calc(-50% + 100px), calc(-50% + 20px)) scale(.78) rotate(3deg); }
+}
+@media (max-width: 767px) {
+    .hero-carousel-stage { height: clamp(440px, 125vw, 540px); }
+    .hero-carousel-card { width: min(92vw, 420px); height: clamp(430px, 120vw, 540px); border-width: 5px; border-radius: 24px; }
+    .hero-carousel-card--previous { opacity: .25; transform: translate(calc(-50% - 72px), calc(-50% + 12px)) scale(.8) rotate(-2deg); }
+    .hero-carousel-card--next { opacity: .25; transform: translate(calc(-50% + 72px), calc(-50% + 12px)) scale(.8) rotate(2deg); }
+    .hero-carousel-card__overlay { @apply px-5 pb-6 pt-20; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *,*::before,*::after { scroll-behavior: auto !important; transition-duration: 0ms !important; animation-duration: 0ms !important; }
+}

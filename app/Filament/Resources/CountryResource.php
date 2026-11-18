@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Filament\Resources\CountryResource\Pages;
+use App\Models\Country;
+use App\Support\CmsCreateAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TrashedFilter;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+class CountryResource extends Resource
+{
+    protected static ?string $model = Country::class;
+
+    protected static string|\UnitEnum|null $navigationGroup = 'System';
+
+    protected static ?string $navigationParentItem = 'Settings';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-map-pin';
+
+    public static function form(Schema $schema): Schema
+    {
+        return $schema->components([
+            TextInput::make('name')->required()->maxLength(100),
+            TextInput::make('slug')->required(fn (string $operation) => $operation === 'edit')->maxLength(255)->unique(ignoreRecord: true)->rules(['regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'])->helperText('Generated automatically on creation if left blank.'),
+            TextInput::make('code')->label('ISO country code')->required()->length(2)->rules(['regex:/^[A-Za-z]{2}$/'])->mutateStateForValidationUsing(fn ($state) => strtoupper($state))->dehydrateStateUsing(fn ($state) => strtoupper($state))->unique(ignoreRecord: true),
+            Toggle::make('is_active')->label('Visible on the website')->default(true)->helperText('Hiding a location also hides its dependent locations and public projects.'),
+        ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table->columns([TextColumn::make('name')->searchable()->sortable(), TextColumn::make('code'), IconColumn::make('is_active')->boolean()])
+            ->defaultSort('name')->filters([TrashedFilter::make()])->recordActions([ViewAction::make(), EditAction::make()])->headerActions([CmsCreateAction::make(static::class)]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->withoutGlobalScopes([SoftDeletingScope::class]);
+    }
+
+    public static function getPages(): array
+    {
+        return ['index' => Pages\ListCountries::route('/'), 'create' => Pages\CreateCountry::route('/create'), 'edit' => Pages\EditCountry::route('/{record}/edit')];
+    }
+}

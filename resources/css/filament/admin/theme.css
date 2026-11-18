@@ -1,0 +1,192 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@custom-variant dark (&:where(.dark, .dark *, [data-theme=dark], [data-theme=dark] *));
+
+@source '../../../../app/Filament';
+@source '../../../views/filament';
+@source '../../../views/components';
+
+@layer components {
+    .ughi-data-table-shell,
+    .fi-ta-ctn {
+        overflow: hidden;
+        border: 1px solid #e5ecea;
+        border-radius: 0.875rem;
+        background: #fff;
+        box-shadow: 0 2px 10px rgb(18 59 45 / 4%);
+    }
+
+    .ughi-data-table-scroll {
+        overflow-x: auto;
+    }
+
+    .ughi-data-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        color: #17212b;
+        font-size: 0.875rem;
+        text-align: left;
+    }
+
+    .ughi-data-table thead {
+        background: #f6f8fa;
+        color: #596773;
+    }
+
+    .ughi-data-table thead th {
+        border-bottom: 1px solid #e5ecea;
+        padding: 0.8rem 1rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.025em;
+    }
+
+    .ughi-data-table tbody tr {
+        background: #fff;
+        transition: background-color 150ms ease;
+    }
+
+    .ughi-data-table tbody tr:hover {
+        background: #f6f8fa;
+    }
+
+    .ughi-data-table tbody tr + tr td {
+        border-top: 1px solid #edf1ef;
+    }
+
+    .ughi-data-table tbody td {
+        padding: 0.9rem 1rem;
+        vertical-align: middle;
+    }
+
+    .ughi-data-table [scope="row"] {
+        color: #17212b;
+        font-weight: 600;
+    }
+
+    .fi-ta-ctn {
+        border-radius: 0.875rem;
+        box-shadow: 0 2px 10px rgb(18 59 45 / 4%);
+    }
+
+    .fi-ta-header-cell {
+        background: #f6f8fa;
+        color: #596773;
+    }
+
+    .fi-ta-row:hover > .fi-ta-cell {
+        background: #f6f8fa;
+    }
+
+    :where(.dark, [data-theme="dark"]) .ughi-data-table-shell,
+    :where(.dark, [data-theme="dark"]) .fi-ta-ctn {
+        border-color: #34413e;
+        background: #17211f;
+    }
+
+    :where(.dark, [data-theme="dark"]) .ughi-data-table {
+        color: #e5ecea;
+    }
+
+    :where(.dark, [data-theme="dark"]) .ughi-data-table thead,
+    :where(.dark, [data-theme="dark"]) .fi-ta-header-cell {
+        background: #202c29;
+        color: #c2cfcb;
+    }
+
+    :where(.dark, [data-theme="dark"]) .ughi-data-table thead th {
+        border-color: #34413e;
+    }
+
+    :where(.dark, [data-theme="dark"]) .ughi-data-table tbody tr {
+        background: #17211f;
+    }
+
+    :where(.dark, [data-theme="dark"]) .ughi-data-table tbody tr:hover,
+    :where(.dark, [data-theme="dark"]) .fi-ta-row:hover > .fi-ta-cell {
+        background: #202c29;
+    }
+
+    :where(.dark, [data-theme="dark"]) .ughi-data-table tbody tr + tr td {
+        border-color: #2c3936;
+    }
+
+    :where(.dark, [data-theme="dark"]) .ughi-data-table [scope="row"] {
+        color: #f1f5f4;
+    }
+
+    .fi-fo-file-upload .filepond--root {
+        min-height: 16rem;
+        overflow: hidden;
+        border: 1px dashed #aebdb8;
+        border-radius: 0.75rem;
+        background: #f6f8fa;
+        box-shadow: none;
+    }
+
+    .fi-fo-file-upload .filepond--panel-root {
+        background: transparent;
+    }
+
+    .fi-fo-file-upload .filepond--drop-label {
+        min-height: 16rem;
+        padding: 1.25rem;
+    }
+
+    .fi-fo-file-upload .filepond--drop-label label {
+        display: flex;
+        min-height: 14rem;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        padding: 1rem;
+        color: #596773;
+        text-align: center;
+    }
+
+    .fi-fo-file-upload .filepond--drop-label label::before {
+        display: block;
+        width: 2rem;
+        height: 2rem;
+        flex: none;
+        background: #0870bd;
+        content: "";
+        -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5'/%3E%3C/svg%3E") center / contain no-repeat;
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5'/%3E%3C/svg%3E") center / contain no-repeat;
+    }
+
+    .fi-fo-file-upload .filepond--label-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #0870bd;
+        border-radius: 0.5rem;
+        background: #0870bd;
+        padding: 0.55rem 0.85rem;
+        color: #fff;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 150ms ease;
+    }
+
+    .fi-fo-file-upload .filepond--label-action:hover {
+        background: #06477f;
+        color: #fff;
+    }
+
+    :where(.dark, [data-theme="dark"]) .fi-fo-file-upload .filepond--root {
+        border-color: #52645e;
+        background: #202c29;
+    }
+
+    :where(.dark, [data-theme="dark"]) .fi-fo-file-upload .filepond--drop-label label {
+        color: #c2cfcb;
+    }
+
+    :where(.dark, [data-theme="dark"]) .fi-fo-file-upload .filepond--drop-label label::before {
+        background: #46c5ad;
+    }
+}
