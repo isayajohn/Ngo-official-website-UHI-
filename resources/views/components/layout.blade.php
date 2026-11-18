@@ -21,11 +21,13 @@
 <meta name="theme-color" content="#06477F">
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body x-data="scrollChrome" @scroll.window.passive="update()">
+<div class="scroll-progress-track" aria-hidden="true"><span class="scroll-progress-bar" :style="`width: ${progress}%`"></span></div>
 <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:p-4 focus:text-primary">Skip to content</a>
 <x-header />
 @if(app()->getLocale() === 'sw')<div class="bg-canvas px-4 py-3 text-center text-sm text-muted" role="status">Kiswahili content is being prepared. English is shown where a translation is not yet available.</div>@endif
 <main id="main">{{ $slot }}</main>
 <x-footer />
+<button x-cloak x-show="visible" x-transition.opacity.duration.200ms type="button" class="back-to-top" aria-label="Back to top" title="Back to top" @click="toTop()"><x-ughi-icon name="arrow-up" class="h-5 w-5"/></button>
 </body>
 </html>

@@ -1,5 +1,19 @@
 import Alpine from 'alpinejs';
 window.Alpine = Alpine;
+Alpine.data('scrollChrome', () => ({
+    progress: 0,
+    visible: false,
+    init() { this.update(); },
+    update() {
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        this.progress = maxScroll > 0 ? Math.min(100, Math.max(0, (window.scrollY / maxScroll) * 100)) : 0;
+        this.visible = window.scrollY > 320;
+    },
+    toTop() {
+        const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+        window.scrollTo({ top: 0, behavior });
+    },
+}));
 Alpine.data('dropdownMenu', ({ trigger = 'hover', delay = 500 } = {}) => ({
     open: false,
     timer: null,

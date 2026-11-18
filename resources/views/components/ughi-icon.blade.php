@@ -4,6 +4,7 @@
 @case('arrow') <path d="M5 12h14m-6-6 6 6-6 6"/> @break
 @case('arrow-left') <path d="M19 12H5m6-6-6 6 6 6"/> @break
 @case('arrow-right') <path d="M5 12h14m-6-6 6 6-6 6"/> @break
+@case('arrow-up') <path d="M12 19V5m-7 7 7-7 7 7"/> @break
 @case('chevron') <path d="m6 9 6 6 6-6"/> @break
 @case('heart') <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/><path d="M4 11h4l2-3 3 7 2-4h5"/> @break
 @case('users') <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m20 0v-2a4 4 0 0 0-3-3.9"/><circle cx="9" cy="7" r="4"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/> @break

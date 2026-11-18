@@ -37,6 +37,10 @@
 @layer components {
     .site-contact-bar { background: linear-gradient(105deg, #28558c 0%, #086db9 100%); }
     .site-utility-inner { max-width: 1200px; }
+    .scroll-progress-track { position: fixed; z-index: 100; top: 0; right: 0; left: 0; height: 3px; background: rgb(8 71 127 / 12%); pointer-events: none; }
+    .scroll-progress-bar { display: block; height: 100%; background: linear-gradient(90deg, #0870bd 0%, #e5242b 100%); transition: width 100ms linear; }
+    .back-to-top { position: fixed; z-index: 80; bottom: 1.75rem; left: 1.75rem; display: flex; width: 2.875rem; height: 2.875rem; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: #f31920; color: white; box-shadow: 0 8px 20px rgb(111 25 25 / 24%); transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease; }
+    .back-to-top:hover { transform: translateY(-3px); background: #d9151b; box-shadow: 0 11px 25px rgb(111 25 25 / 32%); }
     .maintenance-page { background: #d5f0fc; }
     .maintenance-content { animation: maintenance-arrive 650ms cubic-bezier(.2,.75,.25,1) both; }
     .maintenance-illustration { width: min(100%, 27.5rem); }
