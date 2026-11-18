@@ -12,6 +12,10 @@ Alpine.data('dropdownMenu', ({ trigger = 'hover', delay = 500 } = {}) => ({
         this.clearTimer();
         this.timer = window.setTimeout(() => { this.open = true; }, delay);
     },
+    focusIn() {
+        this.clearTimer();
+        this.open = true;
+    },
     pointerLeave() {
         if (trigger !== 'hover') return;
         this.clearTimer();
@@ -20,6 +24,14 @@ Alpine.data('dropdownMenu', ({ trigger = 'hover', delay = 500 } = {}) => ({
     toggle() {
         this.clearTimer();
         this.open = !this.open;
+    },
+    activate() {
+        if (trigger === 'hover') {
+            this.clearTimer();
+            this.open = true;
+            return;
+        }
+        this.toggle();
     },
     close() {
         this.clearTimer();

@@ -18,6 +18,7 @@
 <body>
 <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:p-4 focus:text-primary">Skip to content</a>
 <x-header />
+@if(app()->environment(['local', 'testing']))<div class="demo-preview-notice" role="note"><strong>DEMO PREVIEW</strong><span>Sample content and figures are illustrative only.</span></div>@endif
 @if(app()->getLocale() === 'sw')<div class="bg-canvas px-4 py-3 text-center text-sm text-muted" role="status">Kiswahili content is being prepared. English is shown where a translation is not yet available.</div>@endif
 <main id="main">{{ $slot }}</main>
 <x-footer />

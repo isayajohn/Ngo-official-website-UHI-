@@ -4,8 +4,9 @@
     'align' => 'left',
     'width' => 'w-44',
     'trigger' => 'hover',
-    'delay' => 500,
+    'delay' => 100,
     'variant' => 'brand',
+    'active' => false,
 ])
 
 @php
@@ -18,7 +19,8 @@
         : ($variant === 'mobile'
             ? 'dropdown-menu-trigger dropdown-menu-trigger--mobile'
             : 'dropdown-menu-trigger dropdown-menu-trigger--brand');
-    $panelClass = $variant === 'mobile' ? 'dropdown-menu-panel--mobile' : '';
+    $panelClass = $variant === 'mobile' ? 'dropdown-menu-panel--mobile' : ($variant === 'nav' ? 'dropdown-menu-panel--nav' : '');
+    $activeTriggerClass = $active ? 'text-primary' : '';
 @endphp
 
 <div
@@ -28,6 +30,8 @@
     data-dropdown-delay="{{ (int) $delay }}"
     @mouseenter="pointerEnter()"
     @mouseleave="pointerLeave()"
+    @focusin="focusIn()"
+    @focusout="if (!$el.contains($event.relatedTarget)) close()"
     @click.outside="close()"
     @keydown.escape.stop="closeAndFocus()"
 >
@@ -37,15 +41,15 @@
         data-dropdown-toggle="{{ $menuId }}"
         data-dropdown-trigger="{{ $trigger }}"
         data-dropdown-delay="{{ (int) $delay }}"
-        class="{{ $triggerClass }}"
+        class="{{ $triggerClass }} {{ $activeTriggerClass }}"
         type="button"
         aria-haspopup="true"
         aria-controls="{{ $menuId }}"
         :aria-expanded="open.toString()"
-        @click="toggle()"
+        @click="activate()"
     >
         <span>{{ $label }}</span>
-        <svg class="h-4 w-4 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+        <svg class="h-4 w-4 shrink-0 transition-transform duration-200" :class="open ? 'rotate-180 text-primary' : ''" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
             <path d="m19 9-7 7-7-7" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
         </svg>
     </button>

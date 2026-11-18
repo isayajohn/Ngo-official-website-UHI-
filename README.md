@@ -60,6 +60,8 @@ On macOS the helper submits a project-specific job to the current user's launchd
 
 If `php artisan storage:link` says the link already exists, it is already configured and does not need to be recreated. After changing `.env`, run `php artisan config:clear`; restart an already-running `php artisan serve` process if necessary.
 
+For a local frontend preview, run `php artisan db:seed --class=DemoContentSeeder`. It adds clearly labeled sample projects, partner profiles, stories, events, gallery items, leaders, and impact figures. It is restricted to local/testing environments; replace demo content before launch.
+
 ## Development administrator
 
 In `APP_ENV=local` or `testing`, the seeder creates:
@@ -74,7 +76,7 @@ This password is unrelated to the database password. On first login you must set
 - **Content → Homepage**: hero copy, both CTA labels and URLs, optimized image and alt text, About content, programme introduction, location introduction and get-involved CTA.
 - **Our Work → Programmes**: add, translate, publish/hide, order, edit, soft-delete and restore programmes. Empty slugs are generated uniquely on creation. Keep existing slugs stable. Text is rendered safely with Blade escaping.
 - **Our Work → Projects**: draft, publish/schedule, feature, filter, archive/restore projects; edit narratives, location and gallery. Publication requires project.publish.
-- **Our Work → Impact Statistics**: enter actual counts, evidence and reporting dates; verify saved indicators, then publish. M&E verifies; Administrator/Super Admin can publish. Material changes revoke verification and unpublish the record.
+- **Content → Impact & Homepage Statistics**: enter actual counts, evidence and reporting dates; verify saved indicators, then publish. Organization-wide Regions covered, Staff members, Health facilities and Projects figures populate the homepage band in display order. M&E verifies; Administrator/Super Admin can publish. Material changes revoke verification and unpublish the record.
 - **Organization → Countries / Regions / Districts**: manage the operating hierarchy and public visibility. Dependent projects are hidden when a referenced operating area is hidden.
 - **System → Settings**: branding, mission, vision, goal, verified contact details, social links, footer and default SEO.
 - **System → Policy Pages**: edit Privacy Policy and Terms with `settings.manage`; safeguarding content requires `safeguarding.update`.

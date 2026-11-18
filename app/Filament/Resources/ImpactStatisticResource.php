@@ -31,23 +31,29 @@ class ImpactStatisticResource extends Resource
 {
     protected static ?string $model = ImpactStatistic::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Our Work';
+    protected static string|\UnitEnum|null $navigationGroup = 'Content';
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-chart-bar';
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Impact & Homepage Statistics';
+    }
 
     public static function form(Schema $schema): Schema
     {
         $fields = [
-                Select::make('metric')->options(ImpactStatistic::METRICS)->required(),
+                Select::make('metric')->options(ImpactStatistic::METRICS)->required()
+                    ->helperText('Regions covered, staff members, health facilities and projects feed the homepage impact band when they are organization-wide, verified and published.'),
                 TextInput::make('label.en')->label('Label · English')->required()->maxLength(100), TextInput::make('label.sw')->label('Label · Kiswahili')->maxLength(100),
                 TextInput::make('value')->numeric()->integer()->minValue(0)->maxValue(1000000000000)->default(0)->required()->helperText('Enter the actual count, e.g. 10000. K+/M+ only change display formatting.'),
                 Select::make('suffix')->options(['' => 'None', '+' => '+', 'K+' => 'K+ (thousands)', 'M+' => 'M+ (millions)'])->default('')->dehydrateStateUsing(fn ($state) => $state ?? ''),
-                Select::make('icon')->options(['users' => 'People', 'heart' => 'Health', 'shield' => 'Protection', 'book' => 'Knowledge', 'activity' => 'Activity'])->default('users')->required(),
+                Select::make('icon')->options(['pin' => 'Regions', 'users' => 'People', 'hospital' => 'Health facilities', 'branch' => 'Projects', 'heart' => 'Health', 'shield' => 'Protection', 'book' => 'Knowledge', 'activity' => 'Activity'])->default('users')->required(),
                 Select::make('programme_id')->relationship('programme', 'slug')->getOptionLabelFromRecordUsing(fn ($record) => $record->translated('title'))->searchable()->preload()->live()->afterStateUpdated(fn (Set $set) => $set('project_id', null))->helperText('Leave programme and project blank for an organization-wide indicator.'),
                 Select::make('project_id')->options(fn (Get $get) => Project::query()->when($get('programme_id'), fn ($q, $id) => $q->where('programme_id', $id))->limit(100)->get()->mapWithKeys(fn ($p) => [$p->id => $p->translated('title')]))->searchable(),
                 DatePicker::make('as_of_date')->label('As of')->maxDate(today()),
                 Textarea::make('verification_source')->rows(4)->maxLength(10000)->helperText('Internal evidence reference. Never shown on public pages.'),
-                TextInput::make('display_order')->numeric()->integer()->minValue(0)->default(0)->required(),
+                TextInput::make('display_order')->numeric()->integer()->minValue(0)->default(0)->required()->helperText('Lower numbers appear first in the homepage impact band.'),
                 Toggle::make('is_active')->label('Publish verified indicator')->default(false)->visible(fn (string $operation) => $operation === 'edit' && auth()->user()->can('impact.publish'))->dehydrated(fn () => auth()->user()->can('impact.publish')),
         ];
 
@@ -61,7 +67,10 @@ class ImpactStatisticResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
-            TextColumn::make('label.en')->label('Indicator')->searchable(), TextColumn::make('value')->numeric(), TextColumn::make('programme.title.en')->label('Programme')->wrap(),
+            TextColumn::make('metric')->label('Type')->formatStateUsing(fn (string $state): string => ImpactStatistic::METRICS[$state] ?? $state)->badge(),
+            TextColumn::make('label.en')->label('Label')->searchable(), TextColumn::make('value')->numeric(),
+            TextColumn::make('programme.title.en')->label('Programme')->placeholder('Organization-wide')->wrap(),
+            TextColumn::make('display_order')->label('Homepage order')->sortable(),
             TextColumn::make('as_of_date')->date()->sortable(), TextColumn::make('verified_at')->dateTime()->placeholder('Not verified'), IconColumn::make('is_active')->boolean()->label('Published'),
         ])->defaultSort('display_order')->filters([SelectFilter::make('metric')->options(ImpactStatistic::METRICS), SelectFilter::make('programme_id')->relationship('programme', 'slug'), TernaryFilter::make('is_active')->label('Published'), TrashedFilter::make()])
             ->recordActions([ViewAction::make(), EditAction::make()])->headerActions([CmsCreateAction::make(static::class, true)]);

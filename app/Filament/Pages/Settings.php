@@ -19,11 +19,13 @@ class Settings extends BaseSettings
     {
         return [
             'Organization' => ['organization_name', 'abbreviation', 'tagline', 'logo', 'logo_alt', 'favicon', 'favicon_alt', 'vision', 'mission', 'goal'],
+            'Navigation' => ['header_menu'],
             'Footer' => ['footer_about', 'footer_links', 'footer_legal_links'],
             'Contact' => ['email', 'phone', 'whatsapp', 'physical_address', 'postal_address'],
             'Social media' => ['facebook', 'instagram', 'linkedin', 'youtube', 'x'],
             'Default SEO' => ['default_meta_title', 'default_meta_description', 'default_og_image'],
             'Performance' => ['performance_score_cap', 'performance_on_track_threshold', 'performance_critical_threshold', 'performance_enforce_100_percent_weights'],
+            'Maintenance' => ['public_maintenance_mode', 'public_maintenance_message'],
         ];
     }
 
@@ -31,11 +33,13 @@ class Settings extends BaseSettings
     {
         return [
             'Organization' => 'heroicon-o-building-office-2',
+            'Navigation' => 'heroicon-o-bars-3',
             'Footer' => 'heroicon-o-bars-3-bottom-left',
             'Contact' => 'heroicon-o-phone',
             'Social media' => 'heroicon-o-share',
             'Default SEO' => 'heroicon-o-magnifying-glass',
             'Performance' => 'heroicon-o-chart-bar',
+            'Maintenance' => 'heroicon-o-wrench-screwdriver',
         ];
     }
 
@@ -46,7 +50,7 @@ class Settings extends BaseSettings
 
     protected function editableKeys(): array
     {
-        return ['organization_name', 'abbreviation', 'tagline', 'logo', 'logo_alt', 'favicon', 'favicon_alt', 'mission', 'vision', 'goal', 'email', 'phone', 'whatsapp', 'physical_address', 'postal_address', 'facebook', 'instagram', 'linkedin', 'youtube', 'x', 'footer_about', 'footer_links', 'footer_legal_links', 'default_meta_title', 'default_meta_description', 'default_og_image', 'performance_score_cap', 'performance_on_track_threshold', 'performance_critical_threshold', 'performance_enforce_100_percent_weights'];
+        return ['organization_name', 'abbreviation', 'tagline', 'logo', 'logo_alt', 'favicon', 'favicon_alt', 'mission', 'vision', 'goal', 'header_menu', 'email', 'phone', 'whatsapp', 'physical_address', 'postal_address', 'facebook', 'instagram', 'linkedin', 'youtube', 'x', 'footer_about', 'footer_links', 'footer_legal_links', 'public_maintenance_mode', 'public_maintenance_message', 'default_meta_title', 'default_meta_description', 'default_og_image', 'performance_score_cap', 'performance_on_track_threshold', 'performance_critical_threshold', 'performance_enforce_100_percent_weights'];
     }
 
     protected function fields(): array
@@ -58,6 +62,16 @@ class Settings extends BaseSettings
                 CmsFields::image('logo')->label('Organization logo'), TextInput::make('logo_alt')->label('Logo alternative text')->maxLength(255)->helperText('Used by screen readers and when the logo cannot load.'),
                 CmsFields::image('favicon')->label('Browser favicon'), TextInput::make('favicon_alt')->label('Favicon description')->maxLength(255)->helperText('A short description for the browser icon asset.'),
                 Textarea::make('vision')->required()->maxLength(2000), Textarea::make('mission')->required()->maxLength(4000), Textarea::make('goal')->required()->maxLength(4000),
+            ]),
+            Section::make('Header navigation')->description('Edit the public navigation menu and dropdown links. Items with child links open as dropdowns.')->schema([
+                Repeater::make('header_menu')->label('Menu items')->schema([
+                    TextInput::make('label')->required()->maxLength(40),
+                    TextInput::make('url')->label('Link URL')->maxLength(500)->rules(['nullable', 'regex:/^(\/(?!\/)|https?:\/\/)/i'])->helperText('Use a site path such as /about or a full http(s) URL. This is also shown as the first dropdown link when child links are set.'),
+                    Repeater::make('children')->label('Dropdown links')->schema([
+                        TextInput::make('label')->required()->maxLength(60),
+                        TextInput::make('url')->required()->maxLength(500)->rules(['regex:/^(\/(?!\/)|https?:\/\/)/i'])->helperText('Use a site path or full http(s) URL.'),
+                    ])->columns(2)->defaultItems(0)->maxItems(20)->collapsible()->reorderable(),
+                ])->columns(2)->defaultItems(0)->maxItems(12)->collapsible()->reorderable(),
             ]),
             Section::make('Footer')->description('Manage the footer introduction and the link groups shown on every public page.')->schema([
                 Textarea::make('footer_about')->label('Short organization description')->maxLength(600)->rows(3),
@@ -84,6 +98,10 @@ class Settings extends BaseSettings
                 TextInput::make('performance_critical_threshold')->label('Critical below')->numeric()->minValue(0)->maxValue(200)->required(),
                 Toggle::make('performance_enforce_100_percent_weights')->label('Require KPI weights to total 100%'),
             ])->columns(2),
+            Section::make('Public website maintenance')->description('Turn this on to temporarily replace public pages with a maintenance message. The admin panel remains available to authorized administrators.')->schema([
+                Toggle::make('public_maintenance_mode')->label('Enable maintenance mode')->helperText('Public visitors will receive a maintenance page with a temporary unavailable response.'),
+                Textarea::make('public_maintenance_message')->label('Message for visitors')->rows(4)->maxLength(1000)->required(),
+            ])->columns(1),
         ];
     }
 }

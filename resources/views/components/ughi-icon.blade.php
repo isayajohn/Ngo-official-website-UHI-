@@ -13,6 +13,8 @@
 @case('droplet') <path d="M12 2S4 10 4 15a8 8 0 0 0 16 0c0-5-8-13-8-13Z"/> @break
 @case('book') <path d="M12 5c-3-2-6-2-10-1v15c4-1 7-1 10 1 3-2 6-2 10-1V4c-4-1-7-1-10 1Zm0 0v15"/> @break
 @case('pin') <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/> @break
+@case('hospital') <path d="M3 21h18M5 21V5h14v16M9 5V3h6v2M9 10h2m2 0h2m-6 4h2m2 0h2m-6 7v-4h4v4"/><path d="M11 6v4m-2-2h4"/> @break
+@case('branch') <rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="9" y="15" width="6" height="6" rx="1"/><path d="M6 9v2a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4V9"/> @break
 @case('check') <path d="m5 12 4 4L19 6"/> @break
 @case('menu') <path d="M4 6h16M4 12h16M4 18h16"/> @break
 @case('close') <path d="m6 6 12 12M6 18 18 6"/> @break
@@ -20,6 +22,7 @@
 @case('mail') <rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/> @break
 @case('phone') <path d="M6 3h3l2 5-2.5 1.8a14 14 0 0 0 5.7 5.7L16 13l5 2v3c0 1.1-.9 2-2 2C10.7 20 4 13.3 4 5a2 2 0 0 1 2-2Z"/> @break
 @case('message-circle') <path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.5 8.5 0 0 1-3.7-.9L4 20l1.5-3.7A7.5 7.5 0 1 1 20 11.5Z"/> @break
+@case('wrench') <path d="M14.7 6.3a5 5 0 0 0-6.4 6.4L3.6 17.4a2.1 2.1 0 0 0 3 3l4.7-4.7a5 5 0 0 0 6.4-6.4l-3 3-3-3 3-3Z"/> @break
 @case('arrow-up-right') <path d="M7 17 17 7m-8 0h8v8"/> @break
 @case('leaf') <path d="M20 3C9 1 2 7 5 15s16 4 15-12ZM4 21 15 10"/> @break
 @endswitch

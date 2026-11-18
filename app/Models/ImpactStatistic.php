@@ -14,7 +14,19 @@ class ImpactStatistic extends Model
 {
     use HasTranslatedContent, SoftDeletes;
 
-    public const METRICS = ['people_reached' => 'People reached', 'communities_supported' => 'Communities supported', 'health_workers_trained' => 'Health workers trained', 'projects' => 'Projects', 'partners' => 'Partners', 'other' => 'Other indicator'];
+    public const METRICS = [
+        'people_reached' => 'People reached',
+        'communities_supported' => 'Communities supported',
+        'health_workers_trained' => 'Health workers trained',
+        'regions_covered' => 'Regions covered',
+        'staff_members' => 'Staff members',
+        'health_facilities' => 'Health facilities',
+        'projects' => 'Projects',
+        'partners' => 'Partners',
+        'other' => 'Other indicator',
+    ];
+
+    public const HOMEPAGE_METRICS = ['regions_covered', 'staff_members', 'health_facilities', 'projects'];
 
     protected $fillable = ['programme_id', 'project_id', 'metric', 'label', 'value', 'suffix', 'icon', 'as_of_date', 'verification_source', 'display_order', 'is_active'];
 
